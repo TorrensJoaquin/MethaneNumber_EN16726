@@ -3,7 +3,8 @@
 ## Methane Number according to EN16726 with MWM corrections as a VBA Function for Excel.  
 
 - Optimization performed with a very, **very**, simple genetic algorithm.  
-- While the AVL Method only consider components with less than 5C-. This method manages components with less than 7C-.  
+- While the AVL Method only consider components with less than 5C-. This method manages components with less than 7C-. 
+- Also, the impact of CarbonMonoxide, Butadiene, Butylene, Ethylene, Propylene is taken into account in this algorithm.
 - This algorithm is especially useful in Hidrogen mixtures.  
 
 ## The formula will have the following sintax.  
