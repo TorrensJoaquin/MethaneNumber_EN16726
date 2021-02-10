@@ -11,7 +11,7 @@
 
 - This algorithm is especially useful in Hidrogen mixtures.  
 
-## The formula will have the following sintax.  
+## The formula will have the following syntax.  
 
 =MethaneNumberMWM(Methane,Ethane,Propane,iButane,nButane,ipentane,npentane,Hexanes,Nitrogen,CarbonDioxide,Hydrogen,CarbonMonoxide,Butadiene,Butylene,Ethylene,Propylene,HydrogenSulphide)
 
