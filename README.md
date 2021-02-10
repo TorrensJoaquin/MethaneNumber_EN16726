@@ -5,6 +5,10 @@
 - Optimization performed with a very, **very**, simple genetic algorithm.  
 - While the AVL Method only consider components with less than 5C-. This method manages components with less than 7C-. 
 - Also, the impact of CarbonMonoxide, Butadiene, Butylene, Ethylene, Propylene is taken into account in this algorithm.
+- Good AVL MN correlation if you only use less than 5C- components and no inerts.*(This is requested by some Engines Manufacturers)*  
+
+![MethaneNumberComparison](MethaneNumberComparison.png)  
+
 - This algorithm is especially useful in Hidrogen mixtures.  
 
 ## The formula will have the following sintax.  
