@@ -15,7 +15,7 @@ Dim StandardDeviationOfTheSolver As Single
 Dim CheckIfAnImprovementIsDoneInTheLastXMovements As Boolean
 Function DebuggerShowTheSelectedTernary(Methane As Double, Ethane As Double, Propane As Double, iButane As Double, nButane As Double, ipentane As Double, npentane As Double, Hexanes As Double, Nitrogen As Double, CarbonDioxide As Double, Hydrogen As Double, CarbonMonoxide As Double, Butadiene As Double, Butylene As Double, Ethylene As Double, Propylene As Double, HydrogenSulphide As Double) As Variant
     Dim SimplifiedChromatografy As Variant
-    Dim MethaneNumberMWMSECCOWithoutInerts As Variant
+    Dim MethaneNumberMWMWithoutInerts As Variant
     Dim IsThisComponentPresentHotOnes(1 To 11) As Boolean
     Dim IsThisComponentPresentInThisTernaryHotOnes(1 To 11, 1 To 18) As Boolean
     Dim HowManyComponentsAreRepresentedInThisTernary(1 To 18) As Byte
@@ -35,13 +35,13 @@ Function DebuggerShowTheSelectedTernary(Methane As Double, Ethane As Double, Pro
     Call CalculateHowManyTimesIsTheComponentRepresented(HowManyComponentsAreRepresentedInThisTernary, AffinitiesOfEachTernary, IsThisComponentPresentHotOnes, HowManyTimesIsTheComponentRepresented, WillWeBeUsingThisTernaryHotOnes, NAji, VAji)
     DebuggerShowTheSelectedTernary = WorksheetFunction.Transpose(WillWeBeUsingThisTernaryHotOnes)
 End Function
-Function MethaneNumberMWMSECCO(Methane As Double, Ethane As Double, Propane As Double, iButane As Double, nButane As Double, ipentane As Double, npentane As Double, Hexanes As Double, Nitrogen As Double, CarbonDioxide As Double, Hydrogen As Double, CarbonMonoxide As Double, Butadiene As Double, Butylene As Double, Ethylene As Double, Propylene As Double, HydrogenSulphide As Double) As Variant
+Function MethaneNumberMWM(Methane As Double, Ethane As Double, Propane As Double, iButane As Double, nButane As Double, ipentane As Double, npentane As Double, Hexanes As Double, Nitrogen As Double, CarbonDioxide As Double, Hydrogen As Double, CarbonMonoxide As Double, Butadiene As Double, Butylene As Double, Ethylene As Double, Propylene As Double, HydrogenSulphide As Double) As Variant
     Dim SimplifiedChromatografy As Variant
-    Dim MethaneNumberMWMSECCOWithoutInerts As Variant
+    Dim MethaneNumberMWMWithoutInerts As Variant
     Call UploadTheCoefficients
     SimplifiedChromatografy = SimplifyChromatografy(Methane, Ethane, Propane, iButane, nButane, ipentane, npentane, Hexanes, Nitrogen, CarbonDioxide, Hydrogen, CarbonMonoxide, Butadiene, Butylene, Ethylene, Propylene, HydrogenSulphide)
-    MethaneNumberMWMSECCOWithoutInerts = CalculateMethaneNumberMWMSECCO(SimplifiedChromatografy)
-    MethaneNumberMWMSECCO = MethaneNumberMWMSECCOWithoutInerts + CorrectingMethaneNumberWithInerts(Methane, Ethane, Propane, iButane, nButane, ipentane, npentane, Hexanes, Nitrogen, CarbonDioxide, Hydrogen, CarbonMonoxide, Butadiene, Butylene, Ethylene, Propylene, HydrogenSulphide) - 100.0003
+    MethaneNumberMWMWithoutInerts = CalculateMethaneNumberMWM(SimplifiedChromatografy)
+    MethaneNumberMWM = MethaneNumberMWMWithoutInerts + CorrectingMethaneNumberWithInerts(Methane, Ethane, Propane, iButane, nButane, ipentane, npentane, Hexanes, Nitrogen, CarbonDioxide, Hydrogen, CarbonMonoxide, Butadiene, Butylene, Ethylene, Propylene, HydrogenSulphide) - 100.0003
 End Function
 Private Function CorrectingMethaneNumberWithInerts(Methane As Double, Ethane As Double, Propane As Double, iButane As Double, nButane As Double, ipentane As Double, npentane As Double, Hexanes As Double, Nitrogen As Double, CarbonDioxide As Double, Hydrogen As Double, CarbonMonoxide As Double, Butadiene As Double, Butylene As Double, Ethylene As Double, Propylene As Double, HydrogenSulphide As Double)
     Dim NewMethaneContent As Double
@@ -50,15 +50,17 @@ Private Function CorrectingMethaneNumberWithInerts(Methane As Double, Ethane As 
     Dim j As Byte
     NewMethaneContent = Methane + Ethane + Propane + iButane + nButane + ipentane + npentane + Hexanes + Hydrogen + CarbonMonoxide + Butadiene + Butylene + Ethylene + Propylene + HydrogenSulphide
     SumOfComponents = NewMethaneContent + CarbonDioxide + Nitrogen
-    NewMethaneContent = NewMethaneContent * SumOfComponents / (NewMethaneContent + CarbonDioxide)
-    CarbonDioxide = CarbonDioxide * SumOfComponents / (NewMethaneContent + CarbonDioxide)
+    NewMethaneContent = NewMethaneContent * 100 / (SumOfComponents - Nitrogen)
+    CarbonDioxide = CarbonDioxide * 100 / (SumOfComponents - Nitrogen)
+'    NewMethaneContent = NewMethaneContent * SumOfComponents / (NewMethaneContent + CarbonDioxide)
+'    CarbonDioxide = CarbonDioxide * SumOfComponents / (NewMethaneContent + CarbonDioxide)
     For i = 0 To 7
         For j = 0 To 6
             CorrectingMethaneNumberWithInerts = CorrectingMethaneNumberWithInerts + a(20, i, j) * NewMethaneContent ^ i * CarbonDioxide ^ j
         Next j
     Next i
 End Function
-Private Function CalculateMethaneNumberMWMSECCO(SimplifiedChromatografy As Variant) As Variant
+Private Function CalculateMethaneNumberMWM(SimplifiedChromatografy As Variant) As Variant
     Dim IsThisComponentPresentHotOnes(1 To 11) As Boolean
     Dim IsThisComponentPresentInThisTernaryHotOnes As Variant
     Dim HowManyComponentsAreRepresentedInThisTernary(1 To 18) As Byte
@@ -91,19 +93,19 @@ Private Function CalculateMethaneNumberMWMSECCO(SimplifiedChromatografy As Varia
         If IsThisCompositionInsideBoundarys(VAji) Then
             Call CalculateMethaneNumber(WillWeBeUsingThisTernaryHotOnes, VAji, CalculatedMethaneNumbers, RangeMinMaxAvgValueOfTheResult)
             If ActualMinimumRangeOfTheResultAchieved = 0 Or RangeMinMaxAvgValueOfTheResult(1) < ActualMinimumRangeOfTheResultAchieved Then
-                CalculateMethaneNumberMWMSECCO = 0
+                CalculateMethaneNumberMWM = 0
                 ActualMinimumRangeOfTheResultAchieved = RangeMinMaxAvgValueOfTheResult(1)
                 CheckIfAnImprovementIsDoneInTheLastXMovements = True
                 For i = 1 To 18
                     If WillWeBeUsingThisTernaryHotOnes(i) Then
-                        CalculateMethaneNumberMWMSECCO = CalculateMethaneNumberMWMSECCO + CalculatedMethaneNumbers(WhichCalculatedMethaneNumber) * SumOfNAjiComponentsInTheTernary(i) / 100
+                        CalculateMethaneNumberMWM = CalculateMethaneNumberMWM + CalculatedMethaneNumbers(WhichCalculatedMethaneNumber) * SumOfNAjiComponentsInTheTernary(i) / 100
                         WhichCalculatedMethaneNumber = WhichCalculatedMethaneNumber + 1
                         For j = 1 To 11
                             MinimumNAji(j, i) = NAji(j, i)
                         Next j
                     End If
                 Next i
-                Debug.Print "Iteracion N°: " & x & " : " & Int(RangeMinMaxAvgValueOfTheResult(2)) & " " & Int(RangeMinMaxAvgValueOfTheResult(4)) & " " & Int(RangeMinMaxAvgValueOfTheResult(3)) & "  MN: " & CalculateMethaneNumberMWMSECCO & "  Rango: " & RangeMinMaxAvgValueOfTheResult(1) & " " & StandardDeviationOfTheSolver
+                Debug.Print "Iteracion N°: " & x & " : " & Int(RangeMinMaxAvgValueOfTheResult(2)) & " " & Int(RangeMinMaxAvgValueOfTheResult(4)) & " " & Int(RangeMinMaxAvgValueOfTheResult(3)) & "  MN: " & CalculateMethaneNumberMWM & "  Rango: " & RangeMinMaxAvgValueOfTheResult(1) & " " & StandardDeviationOfTheSolver
                 WhichCalculatedMethaneNumber = 1
                 If RangeMinMaxAvgValueOfTheResult(1) < 0.1 Then
                     Exit For
