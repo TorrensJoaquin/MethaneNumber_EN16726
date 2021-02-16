@@ -16,3 +16,5 @@
 =MethaneNumberMWM(Methane,Ethane,Propane,iButane,nButane,ipentane,npentane,Hexanes,Nitrogen,CarbonDioxide,Hydrogen,CarbonMonoxide,Butadiene,Butylene,Ethylene,Propylene,HydrogenSulphide)
 
 ### All the components are requested in Volume Percent
+
+distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
