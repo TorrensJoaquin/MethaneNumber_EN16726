@@ -2,6 +2,7 @@
 
 ## Methane Number according to EN16726 with MWM corrections as a VBA Function for Excel.  
 
+- More information in EUROMOT webpage, https://www.euromot.eu/publication-and-events/publications/
 - Optimization performed with a very, **very**, simple stochastic pathfinding algorithm.  
 - While the AVL Method only consider components with less than 5C-. This method manages components with less than 7C-. 
 - Also, the impact of CarbonMonoxide, Butadiene, Butylene, Ethylene, Propylene are taken into account in this algorithm.
