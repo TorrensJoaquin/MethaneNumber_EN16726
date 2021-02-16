@@ -9,7 +9,7 @@
 
 ![MethaneNumberComparison](MethaneNumberComparison.png)  
 
-- This algorithm is especially useful in Hidrogen mixtures.  
+- This algorithm is especially useful in mixtures with high Hydrogen content.  
 
 ## The formula will have the following syntax.  
 
