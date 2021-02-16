@@ -105,7 +105,7 @@ Private Function CalculateMethaneNumberMWM(SimplifiedChromatografy As Variant) A
                         Next j
                     End If
                 Next i
-                Debug.Print "Iteracion N°: " & x & " : " & Int(RangeMinMaxAvgValueOfTheResult(2)) & " " & Int(RangeMinMaxAvgValueOfTheResult(4)) & " " & Int(RangeMinMaxAvgValueOfTheResult(3)) & "  MN: " & CalculateMethaneNumberMWM & "  Rango: " & RangeMinMaxAvgValueOfTheResult(1) & " " & StandardDeviationOfTheSolver
+                'Debug.Print "Iteracion N°: " & x & " : " & Int(RangeMinMaxAvgValueOfTheResult(2)) & " " & Int(RangeMinMaxAvgValueOfTheResult(4)) & " " & Int(RangeMinMaxAvgValueOfTheResult(3)) & "  MN: " & CalculateMethaneNumberMWM & "  Rango: " & RangeMinMaxAvgValueOfTheResult(1) & " " & StandardDeviationOfTheSolver
                 WhichCalculatedMethaneNumber = 1
                 If RangeMinMaxAvgValueOfTheResult(1) < 0.1 Then
                     Exit For
