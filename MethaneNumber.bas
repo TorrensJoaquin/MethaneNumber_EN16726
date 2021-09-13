@@ -138,7 +138,7 @@ Private Sub CalculateVAji(IsThisComponentPresentInThisTernaryHotOnes As Variant,
     Dim RelationshipBetweenRandomNumbersAndTotalVolume(1 To 11) As Single
     Dim i As Byte
     Dim j As Byte
-    'This is the pathfinding solver changing the presition.
+    'This is the pathfinding solver changing the precision.
     If x Mod 500 = 0 Then
         If CheckIfAnImprovementIsDoneInTheLastXMovements = False Then
             StandardDeviationOfTheSolver = StandardDeviationOfTheSolver * 0.5
