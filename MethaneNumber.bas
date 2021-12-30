@@ -141,7 +141,7 @@ Private Sub CalculateVAji(IsThisComponentPresentInThisTernaryHotOnes As Variant,
     'This is the pathfinding solver changing the precision.
     If x Mod 500 = 0 Then
         If CheckIfAnImprovementIsDoneInTheLastXMovements = False Then
-            StandardDeviationOfTheSolver = StandardDeviationOfTheSolver * 0.5
+            StandardDeviationOfTheSolver = StandardDeviationOfTheSolver * 0.75
         End If
         CheckIfAnImprovementIsDoneInTheLastXMovements = False
     End If
@@ -177,10 +177,10 @@ Private Sub CalculateVAji(IsThisComponentPresentInThisTernaryHotOnes As Variant,
 End Sub
 Private Function RandomizedNumberWithEvolutiveApproach(x As Long, MinimumNAji() As Single, j As Byte, i As Byte)
     If x \ 1000 = 0 Then
-        RandomizedNumberWithEvolutiveApproach = Rnd()
+        RandomizedNumberWithEvolutiveApproach = Rnd() * StandardDeviationOfTheSolver
     Else
-        'RandomizedNumberWithEvolutiveApproach = Rnd() * StandardDeviationOfTheSolver + MinimumNAji(j, i)
-        RandomizedNumberWithEvolutiveApproach = Abs(WorksheetFunction.Norm_Inv(Rnd(), MinimumNAji(j, i), MinimumNAji(j, i) * StandardDeviationOfTheSolver))
+        RandomizedNumberWithEvolutiveApproach = Rnd() * StandardDeviationOfTheSolver + MinimumNAji(j, i)
+        'RandomizedNumberWithEvolutiveApproach = Abs(WorksheetFunction.Norm_Inv(Rnd(), MinimumNAji(j, i), MinimumNAji(j, i) * StandardDeviationOfTheSolver))
     End If
 End Function
 Private Sub CalculateHowManyTimesIsTheComponentRepresented(HowManyComponentsAreRepresentedInThisTernary() As Byte, AffinitiesOfEachTernary() As Double, IsThisComponentPresentHotOnes() As Boolean, HowManyTimesIsTheComponentRepresented() As Byte, WillWeBeUsingThisTernaryHotOnes() As Boolean, NAji() As Single, VAji() As Single)
