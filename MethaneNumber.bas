@@ -179,6 +179,7 @@ Private Function RandomizedNumberWithEvolutiveApproach(x As Long, MinimumNAji() 
     If x \ 1000 = 0 Then
         RandomizedNumberWithEvolutiveApproach = Rnd()
     Else
+        'RandomizedNumberWithEvolutiveApproach = Rnd() * StandardDeviationOfTheSolver + MinimumNAji(j, i)
         RandomizedNumberWithEvolutiveApproach = Abs(WorksheetFunction.Norm_Inv(Rnd(), MinimumNAji(j, i), MinimumNAji(j, i) * StandardDeviationOfTheSolver))
     End If
 End Function
