@@ -2,7 +2,7 @@ Option Explicit
 Const OptimalAmountsOfComponentsRepresentedInTheTernary As Byte = 3
 Dim a(1 To 20, 0 To 7, 0 To 6) As Double
 Dim MinVmaxOverVSum(1 To 11, 1 To 18) As Double
-Dim TernaryComponents(1 To 18, 1 To 11) As Boolean 'HotOne matrix of components inside a specific ternary
+Dim TernaryComponents(1 To 18, 1 To 11) As Boolean 'Hot one matrix of components inside a specific ternary
 Dim xyzOfTernary(1 To 18, 1 To 3) As Byte
 Dim CompensationForShortTernary(1 To 18) As Byte
 Dim xMax(1 To 20) As Byte
@@ -98,7 +98,7 @@ Private Function CalculateMethaneNumberMWM(SimplifiedChromatografy As Variant) A
                 CheckIfAnImprovementIsDoneInTheLastXMovements = True
                 For i = 1 To 18
                     If WillWeBeUsingThisTernaryHotOnes(i) Then
-                        CalculateMethaneNumberMWM = CalculateMethaneNumberMWM + CalculatedMethaneNumbers(WhichCalculatedMethaneNumber) * SumOfNAjiComponentsInTheTernary(i) / 100
+                        CalculateMethaneNumberMWM = CalculateMethaneNumberMWM + CalculatedMethaneNumbers(WhichCalculatedMethaneNumber) * SumOfNAjiComponentsInTheTernary(i) * 0.01
                         WhichCalculatedMethaneNumber = WhichCalculatedMethaneNumber + 1
                         For j = 1 To 11
                             MinimumNAji(j, i) = NAji(j, i)
@@ -126,7 +126,7 @@ Private Sub CalculateMethaneNumber(WillWeBeUsingThisTernaryHotOnes() As Boolean,
             CalculatedMethaneNumbers(UBound(CalculatedMethaneNumbers)) = FunctionA3(i, VAji)
         End If
     Next i
-    'This value is important. Is going to be the Objective Function
+    'This value is going to be the Objective Function
     RangeMinMaxAvgValueOfTheResult(2) = WorksheetFunction.Min(CalculatedMethaneNumbers)
     RangeMinMaxAvgValueOfTheResult(3) = WorksheetFunction.Max(CalculatedMethaneNumbers)
     RangeMinMaxAvgValueOfTheResult(4) = WorksheetFunction.Average(CalculatedMethaneNumbers)
@@ -176,7 +176,7 @@ Private Sub CalculateVAji(IsThisComponentPresentInThisTernaryHotOnes As Variant,
     Next i
 End Sub
 Private Function RandomizedNumberWithEvolutiveApproach(x As Long, MinimumNAji() As Single, j As Byte, i As Byte)
-    If x \ 1000 = 0 Then
+    If x * 0.001 = 0 Then
         RandomizedNumberWithEvolutiveApproach = Rnd() * StandardDeviationOfTheSolver
     Else
         RandomizedNumberWithEvolutiveApproach = Rnd() * StandardDeviationOfTheSolver + MinimumNAji(j, i)
