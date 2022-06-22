@@ -36,20 +36,16 @@ Function DebuggerShowTheSelectedTernary(Methane As Double, Ethane As Double, Pro
     DebuggerShowTheSelectedTernary = WorksheetFunction.Transpose(WillWeBeUsingThisTernaryHotOnes)
 End Function
 Function MethaneNumberMWM(Methane As Double, Ethane As Double, Propane As Double, iButane As Double, nButane As Double, ipentane As Double, npentane As Double, Hexanes As Double, Nitrogen As Double, CarbonDioxide As Double, Hydrogen As Double, CarbonMonoxide As Double, Butadiene As Double, Butylene As Double, Ethylene As Double, Propylene As Double, HydrogenSulphide As Double) As Variant
-    Dim SimplifiedChromatografy As Variant
-    Dim MethaneNumberMWMWithoutInerts As Variant
     Call UploadTheCoefficients
-    SimplifiedChromatografy = SimplifyChromatografy(Methane, Ethane, Propane, iButane, nButane, ipentane, npentane, Hexanes, Nitrogen, CarbonDioxide, Hydrogen, CarbonMonoxide, Butadiene, Butylene, Ethylene, Propylene, HydrogenSulphide)
-    MethaneNumberMWMWithoutInerts = CalculateMethaneNumberMWM(SimplifiedChromatografy)
+    Dim SimplifiedChromatografy As Variant: SimplifiedChromatografy = SimplifyChromatografy(Methane, Ethane, Propane, iButane, nButane, ipentane, npentane, Hexanes, Nitrogen, CarbonDioxide, Hydrogen, CarbonMonoxide, Butadiene, Butylene, Ethylene, Propylene, HydrogenSulphide)
+    Dim MethaneNumberMWMWithoutInerts As Variant: MethaneNumberMWMWithoutInerts = CalculateMethaneNumberMWM(SimplifiedChromatografy)
     MethaneNumberMWM = MethaneNumberMWMWithoutInerts + CorrectingMethaneNumberWithInerts(Methane, Ethane, Propane, iButane, nButane, ipentane, npentane, Hexanes, Nitrogen, CarbonDioxide, Hydrogen, CarbonMonoxide, Butadiene, Butylene, Ethylene, Propylene, HydrogenSulphide) - 100.0003
 End Function
 Private Function CorrectingMethaneNumberWithInerts(Methane As Double, Ethane As Double, Propane As Double, iButane As Double, nButane As Double, ipentane As Double, npentane As Double, Hexanes As Double, Nitrogen As Double, CarbonDioxide As Double, Hydrogen As Double, CarbonMonoxide As Double, Butadiene As Double, Butylene As Double, Ethylene As Double, Propylene As Double, HydrogenSulphide As Double)
-    Dim NewMethaneContent As Double
-    Dim SumOfComponents As Double
     Dim i As Byte
     Dim j As Byte
-    NewMethaneContent = Methane + Ethane + Propane + iButane + nButane + ipentane + npentane + Hexanes + Hydrogen + CarbonMonoxide + Butadiene + Butylene + Ethylene + Propylene + HydrogenSulphide
-    SumOfComponents = NewMethaneContent + CarbonDioxide + Nitrogen
+    Dim NewMethaneContent As Double: NewMethaneContent = Methane + Ethane + Propane + iButane + nButane + ipentane + npentane + Hexanes + Hydrogen + CarbonMonoxide + Butadiene + Butylene + Ethylene + Propylene + HydrogenSulphide
+    Dim SumOfComponents As Double: SumOfComponents = NewMethaneContent + CarbonDioxide + Nitrogen
     NewMethaneContent = NewMethaneContent * 100 / (SumOfComponents - Nitrogen)
     CarbonDioxide = CarbonDioxide * 100 / (SumOfComponents - Nitrogen)
 '    NewMethaneContent = NewMethaneContent * SumOfComponents / (NewMethaneContent + CarbonDioxide)
@@ -83,16 +79,15 @@ Private Function CalculateMethaneNumberMWM(SimplifiedChromatografy As Variant) A
     Dim j As Byte
     Dim x As Long
     Dim RangeMinMaxAvgValueOfTheResult(1 To 4) As Single
-    Dim ActualMinimumRangeOfTheResultAchieved  As Single
+    Dim ActualMinimumRangeOfTheResultAchieved  As Single: ActualMinimumRangeOfTheResultAchieved = 9999
     Dim ActualBestCalculatedMethaneNumber As Single
-    Dim WhichCalculatedMethaneNumber As Byte
-    WhichCalculatedMethaneNumber = 1
+    Dim WhichCalculatedMethaneNumber As Byte: WhichCalculatedMethaneNumber = 1
     IsThisComponentPresentInThisTernaryHotOnes = GetMeIsThisComponentPresentInThisTernaryHotOnes(IsThisComponentPresentHotOnes, WillWeBeUsingThisTernaryHotOnes, TernaryComponents)
     For x = 1 To 10000
         Call CalculateVAji(IsThisComponentPresentInThisTernaryHotOnes, SimplifiedChromatografy, VAji, SumOfNAjiComponentsInTheTernary, NAji, x, MinimumNAji)
         If IsThisCompositionInsideBoundarys(VAji) Then
             Call CalculateMethaneNumber(WillWeBeUsingThisTernaryHotOnes, VAji, CalculatedMethaneNumbers, RangeMinMaxAvgValueOfTheResult)
-            If ActualMinimumRangeOfTheResultAchieved = 0 Or RangeMinMaxAvgValueOfTheResult(1) < ActualMinimumRangeOfTheResultAchieved Then
+            If RangeMinMaxAvgValueOfTheResult(1) < ActualMinimumRangeOfTheResultAchieved Then
                 CalculateMethaneNumberMWM = 0
                 ActualMinimumRangeOfTheResultAchieved = RangeMinMaxAvgValueOfTheResult(1)
                 CheckIfAnImprovementIsDoneInTheLastXMovements = True
@@ -107,7 +102,7 @@ Private Function CalculateMethaneNumberMWM(SimplifiedChromatografy As Variant) A
                 Next i
                 'Debug.Print "Iteracion N°: " & x & " : " & Int(RangeMinMaxAvgValueOfTheResult(2)) & " " & Int(RangeMinMaxAvgValueOfTheResult(4)) & " " & Int(RangeMinMaxAvgValueOfTheResult(3)) & "  MN: " & CalculateMethaneNumberMWM & "  Rango: " & RangeMinMaxAvgValueOfTheResult(1) & " " & StandardDeviationOfTheSolver
                 WhichCalculatedMethaneNumber = 1
-                If RangeMinMaxAvgValueOfTheResult(1) < 0.1 Then
+                If RangeMinMaxAvgValueOfTheResult(1) < 0.01 Then
                     Exit For
                 End If
             End If
@@ -129,7 +124,7 @@ Private Sub CalculateMethaneNumber(WillWeBeUsingThisTernaryHotOnes() As Boolean,
     'This value is going to be the Objective Function
     RangeMinMaxAvgValueOfTheResult(2) = WorksheetFunction.Min(CalculatedMethaneNumbers)
     RangeMinMaxAvgValueOfTheResult(3) = WorksheetFunction.Max(CalculatedMethaneNumbers)
-    RangeMinMaxAvgValueOfTheResult(4) = WorksheetFunction.Average(CalculatedMethaneNumbers)
+    'RangeMinMaxAvgValueOfTheResult(4) = WorksheetFunction.Average(CalculatedMethaneNumbers)
     RangeMinMaxAvgValueOfTheResult(1) = RangeMinMaxAvgValueOfTheResult(3) - RangeMinMaxAvgValueOfTheResult(2)
 End Sub
 Private Sub CalculateVAji(IsThisComponentPresentInThisTernaryHotOnes As Variant, SimplifiedChromatografy As Variant, VAji() As Single, SumOfNAjiComponentsInTheTernary() As Single, NAji() As Single, x As Long, MinimumNAji() As Single)
@@ -141,24 +136,22 @@ Private Sub CalculateVAji(IsThisComponentPresentInThisTernaryHotOnes As Variant,
     'This is the pathfinding solver changing the precision.
     If x Mod 500 = 0 Then
         If CheckIfAnImprovementIsDoneInTheLastXMovements = False Then
-            StandardDeviationOfTheSolver = StandardDeviationOfTheSolver * 0.75
+            StandardDeviationOfTheSolver = StandardDeviationOfTheSolver * 0.7
         End If
         CheckIfAnImprovementIsDoneInTheLastXMovements = False
     End If
     '
     For i = 1 To 18
-        SumOfNAjiComponentsInTheTernary(i) = 0
-    Next i
-    For i = 1 To 18
         For j = 1 To 11
             If IsThisComponentPresentInThisTernaryHotOnes(j, i) Then
-                FractionOfComponentInsideTernary(j, i) = RandomizedNumberWithEvolutiveApproach(x, MinimumNAji, j, i)
+                FractionOfComponentInsideTernary(j, i) = RandomizedNumberWithEvolutiveApproach(MinimumNAji, j, i)
                 RelationshipBetweenRandomNumbersAndTotalVolume(j) = RelationshipBetweenRandomNumbersAndTotalVolume(j) + FractionOfComponentInsideTernary(j, i)
             End If
         Next j
     Next i
     'Create The second stage of FractionOfComponentInsideTernary -> NAji.
     For i = 1 To 18
+        SumOfNAjiComponentsInTheTernary(i) = 0
         For j = 1 To 11
             If IsThisComponentPresentInThisTernaryHotOnes(j, i) Then
                 NAji(j, i) = FractionOfComponentInsideTernary(j, i) * SimplifiedChromatografy(j) / RelationshipBetweenRandomNumbersAndTotalVolume(j)
@@ -175,13 +168,9 @@ Private Sub CalculateVAji(IsThisComponentPresentInThisTernaryHotOnes As Variant,
         Next j
     Next i
 End Sub
-Private Function RandomizedNumberWithEvolutiveApproach(x As Long, MinimumNAji() As Single, j As Byte, i As Byte)
-    If x * 0.001 = 0 Then
-        RandomizedNumberWithEvolutiveApproach = Rnd() * StandardDeviationOfTheSolver
-    Else
-        RandomizedNumberWithEvolutiveApproach = Rnd() * StandardDeviationOfTheSolver + MinimumNAji(j, i)
-        'RandomizedNumberWithEvolutiveApproach = Abs(WorksheetFunction.Norm_Inv(Rnd(), MinimumNAji(j, i), MinimumNAji(j, i) * StandardDeviationOfTheSolver))
-    End If
+Private Function RandomizedNumberWithEvolutiveApproach(MinimumNAji() As Single, j As Byte, i As Byte)
+    RandomizedNumberWithEvolutiveApproach = Rnd() * StandardDeviationOfTheSolver + MinimumNAji(j, i)
+    'RandomizedNumberWithEvolutiveApproach = Abs(WorksheetFunction.Norm_Inv(Rnd(), MinimumNAji(j, i), MinimumNAji(j, i) * StandardDeviationOfTheSolver))
 End Function
 Private Sub CalculateHowManyTimesIsTheComponentRepresented(HowManyComponentsAreRepresentedInThisTernary() As Byte, AffinitiesOfEachTernary() As Double, IsThisComponentPresentHotOnes() As Boolean, HowManyTimesIsTheComponentRepresented() As Byte, WillWeBeUsingThisTernaryHotOnes() As Boolean, NAji() As Single, VAji() As Single)
     'Inputs: HowManyComponentsAreRepresentedInThisTernary() as byte,AffinitiesOfEachTernary() as Single,IsThisComponentPresentHotOnes () as byte
@@ -313,7 +302,6 @@ End Sub
 Private Function IsThisCompositionInsideBoundarys(VAji() As Single) As Boolean
     IsThisCompositionInsideBoundarys = True
     Dim i As Byte
-    Dim j As Byte
     For i = 1 To 18
         If xyzOfTernary(i, 1) <> 0 Then
             If VAji(xyzOfTernary(i, 1), i) > xMax(i) And VAji(xyzOfTernary(i, 1), i) < xMin(i) Then
@@ -321,14 +309,12 @@ Private Function IsThisCompositionInsideBoundarys(VAji() As Single) As Boolean
                 Exit For
             End If
         End If
-        
         If xyzOfTernary(i, 2) <> 0 Then
             If VAji(xyzOfTernary(i, 2), i) > yMax(i) And VAji(xyzOfTernary(i, 2), i) < yMin(i) Then
                 IsThisCompositionInsideBoundarys = False
                 Exit For
             End If
         End If
-        
         If xyzOfTernary(i, 3) <> 0 Then
             If VAji(xyzOfTernary(i, 3), i) > zMax(i) And VAji(xyzOfTernary(i, 3), i) < zMin(i) Then
                 IsThisCompositionInsideBoundarys = False
@@ -350,7 +336,7 @@ Private Function SimplifyChromatografy(Methane As Double, Ethane As Double, Prop
     Result(7) = Hydrogen
     Result(8) = Propane
     Result(9) = Ethane
-    Result(10) = (iButane + nButane) + (ipentane + npentane) * 2.3 + Hexanes * 5.3 + Butadiene + Butylene
+    Result(10) = iButane + nButane + (ipentane + npentane) * 2.3 + Hexanes * 5.3 + Butadiene + Butylene
     Result(11) = Methane
     For i = 1 To 11
         SumOfComponents = SumOfComponents + Result(i)
@@ -363,7 +349,6 @@ End Function
 Private Sub UploadTheCoefficients()
     'Solver Coefficients
     StandardDeviationOfTheSolver = 1
-    '
     CompensationForShortTernary(12) = 1
     CompensationForShortTernary(13) = 1
     CompensationForShortTernary(14) = 1
