@@ -199,14 +199,11 @@ Private Sub CalculateHowManyTimesIsTheComponentRepresented(HowManyComponentsAreR
                 Exit For
             End If
         Next CurrentComponentInAnalisys
-        If MinimumAmmountOfAceptableTernaryMixtures(0) Then
-            Exit For
-        End If
+        If MinimumAmmountOfAceptableTernaryMixtures(0) Then Exit For
     Next RunAgainTheTernarySelectionAnalysis
 End Sub
 Private Function DoIveAlreadyCoveredThisComponentDuringThisIteration(CurrentComponentInAnalisys As Byte, TernaryCoveredInTheLastIteration() As Boolean) As Boolean
-    Dim i As Byte
-    For i = 1 To 18
+    Dim i As Byte: For i = 1 To 18
         If TernaryCoveredInTheLastIteration(i) And MinVmaxOverVSum(CurrentComponentInAnalisys, i) <> 0 Then
             DoIveAlreadyCoveredThisComponentDuringThisIteration = True
         End If
@@ -228,9 +225,7 @@ Private Function FindTheNextTernaryToBeSelected(CurrentComponentInAnalisys As By
                 End If
             End If
         Next i
-        If ActualTernarySelected <> 0 Then
-            Exit For
-        End If
+        If ActualTernarySelected <> 0 Then Exit For
     Next LowDownMyExpectationOnTheComponentsRepresentedInTheTernary
     FindTheNextTernaryToBeSelected = ActualTernarySelected
 End Function
@@ -240,9 +235,9 @@ Private Function GetMeIsThisComponentPresentInThisTernaryHotOnes(IsThisComponent
     Dim j As Byte
     For i = 1 To 18
         For j = 1 To 11
-        If IsThisComponentPresentHotOnes(j) And WillWeBeUsingThisTernaryHotOnes(i) And TernaryComponents(i, j) Then
-            IsThisComponentPresentInThisTernaryHotOnes(j, i) = True
-        End If
+            If IsThisComponentPresentHotOnes(j) And WillWeBeUsingThisTernaryHotOnes(i) And TernaryComponents(i, j) Then
+                IsThisComponentPresentInThisTernaryHotOnes(j, i) = True
+            End If
         Next j
     Next i
     GetMeIsThisComponentPresentInThisTernaryHotOnes = IsThisComponentPresentInThisTernaryHotOnes
@@ -265,8 +260,8 @@ Private Function DoIAlreadyHaveTheMinimumAmmountOfAceptableTernaryMixtures(IsThi
     Next i
     For j = 1 To 11
         If IsThisComponentPresentHotOnes(j) And HowManyTimesIsTheComponentRepresented(j) < 2 Then
-                MinimumAmmountOfAceptableTernaryMixtures(0) = False
-                MinimumAmmountOfAceptableTernaryMixtures(j) = False
+            MinimumAmmountOfAceptableTernaryMixtures(0) = False
+            MinimumAmmountOfAceptableTernaryMixtures(j) = False
         End If
     Next j
     DoIAlreadyHaveTheMinimumAmmountOfAceptableTernaryMixtures = MinimumAmmountOfAceptableTernaryMixtures
