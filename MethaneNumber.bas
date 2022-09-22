@@ -102,9 +102,7 @@ Private Function CalculateMethaneNumberMWM(SimplifiedChromatografy As Variant) A
                 Next i
                 'Debug.Print "Iteracion N°: " & x & " : " & Int(RangeMinMaxAvgValueOfTheResult(2)) & " " & Int(RangeMinMaxAvgValueOfTheResult(4)) & " " & Int(RangeMinMaxAvgValueOfTheResult(3)) & "  MN: " & CalculateMethaneNumberMWM & "  Rango: " & RangeMinMaxAvgValueOfTheResult(1) & " " & StandardDeviationOfTheSolver
                 WhichCalculatedMethaneNumber = 1
-                If RangeMinMaxAvgValueOfTheResult(1) < 0.01 Then
-                    Exit For
-                End If
+                If RangeMinMaxAvgValueOfTheResult(1) < 0.01 Then Exit For
             End If
         End If
     Next x
@@ -115,9 +113,7 @@ Private Sub CalculateMethaneNumber(WillWeBeUsingThisTernaryHotOnes() As Boolean,
     CalculatedMethaneNumbers(1) = 0
     For i = 1 To 18
         If WillWeBeUsingThisTernaryHotOnes(i) Then
-            If CalculatedMethaneNumbers(1) <> 0 Then
-                ReDim Preserve CalculatedMethaneNumbers(1 To UBound(CalculatedMethaneNumbers) + 1)
-            End If
+            If CalculatedMethaneNumbers(1) <> 0 Then ReDim Preserve CalculatedMethaneNumbers(1 To UBound(CalculatedMethaneNumbers) + 1)
             CalculatedMethaneNumbers(UBound(CalculatedMethaneNumbers)) = FunctionA3(i, VAji)
         End If
     Next i
@@ -162,9 +158,7 @@ Private Sub CalculateVAji(IsThisComponentPresentInThisTernaryHotOnes As Variant,
     'Calculate VAji
     For i = 1 To 18
         For j = 1 To 11
-            If NAji(j, i) <> 0 Then
-                VAji(j, i) = NAji(j, i) * 100 / SumOfNAjiComponentsInTheTernary(i)
-            End If
+            If NAji(j, i) <> 0 Then VAji(j, i) = NAji(j, i) * 100 / SumOfNAjiComponentsInTheTernary(i)
         Next j
     Next i
 End Sub
@@ -287,11 +281,8 @@ Private Sub CalculateHowManyComponentsAreRepresentedInThisTernary(IsThisComponen
     Next i
 End Sub
 Private Sub CalculateIsThisComponentPresentHotOnes(SimplifiedChromatografy As Variant, IsThisComponentPresentHotOnes() As Boolean)
-    Dim j As Byte
-    For j = 1 To 11
-        If SimplifiedChromatografy(j) > 0.05 Then
-            IsThisComponentPresentHotOnes(j) = True
-        End If
+    Dim j As Byte: For j = 1 To 11
+        If SimplifiedChromatografy(j) > 0.05 Then IsThisComponentPresentHotOnes(j) = True
     Next j
 End Sub
 Private Function IsThisCompositionInsideBoundarys(VAji() As Single) As Boolean
