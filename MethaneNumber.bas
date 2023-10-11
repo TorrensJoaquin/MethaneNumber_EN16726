@@ -42,8 +42,7 @@ Function MethaneNumberMWM(Methane As Double, Ethane As Double, Propane As Double
     MethaneNumberMWM = MethaneNumberMWMWithoutInerts + CorrectingMethaneNumberWithInerts(Methane, Ethane, Propane, iButane, nButane, ipentane, npentane, Hexanes, Nitrogen, CarbonDioxide, Hydrogen, CarbonMonoxide, Butadiene, Butylene, Ethylene, Propylene, HydrogenSulphide) - 100.0003
 End Function
 Private Function CorrectingMethaneNumberWithInerts(Methane As Double, Ethane As Double, Propane As Double, iButane As Double, nButane As Double, ipentane As Double, npentane As Double, Hexanes As Double, Nitrogen As Double, CarbonDioxide As Double, Hydrogen As Double, CarbonMonoxide As Double, Butadiene As Double, Butylene As Double, Ethylene As Double, Propylene As Double, HydrogenSulphide As Double)
-    Dim i As Byte
-    Dim j As Byte
+    Dim i As Byte, j As Byte
     Dim NewMethaneContent As Double: NewMethaneContent = Methane + Ethane + Propane + iButane + nButane + ipentane + npentane + Hexanes + Hydrogen + CarbonMonoxide + Butadiene + Butylene + Ethylene + Propylene + HydrogenSulphide
     Dim SumOfComponents As Double: SumOfComponents = NewMethaneContent + CarbonDioxide + Nitrogen
     NewMethaneContent = NewMethaneContent * 100 / (SumOfComponents - Nitrogen)
@@ -75,9 +74,7 @@ Private Function CalculateMethaneNumberMWM(SimplifiedChromatografy As Variant) A
     Call CalculateAffinitiesOfEachTernary(SimplifiedChromatografy, AffinitiesOfEachTernary)
     Call CalculateHowManyTimesIsTheComponentRepresented(HowManyComponentsAreRepresentedInThisTernary, AffinitiesOfEachTernary, IsThisComponentPresentHotOnes, HowManyTimesIsTheComponentRepresented, WillWeBeUsingThisTernaryHotOnes, NAji, VAji)
     '
-    Dim i As Byte
-    Dim j As Byte
-    Dim x As Long
+    Dim i As Byte, j As Byte, x As Long
     Dim RangeMinMaxAvgValueOfTheResult(1 To 4) As Single
     Dim ActualMinimumRangeOfTheResultAchieved  As Single: ActualMinimumRangeOfTheResultAchieved = 9999
     Dim ActualBestCalculatedMethaneNumber As Single
@@ -127,8 +124,7 @@ Private Sub CalculateVAji(IsThisComponentPresentInThisTernaryHotOnes As Variant,
     'Create The first stage of FractionOfComponentInsideTernary.
     Dim FractionOfComponentInsideTernary(1 To 11, 1 To 18) As Single
     Dim RelationshipBetweenRandomNumbersAndTotalVolume(1 To 11) As Single
-    Dim i As Byte
-    Dim j As Byte
+    Dim i As Byte, j As Byte
     'This is the pathfinding solver changing the precision.
     If x Mod 500 = 0 Then
         If CheckIfAnImprovementIsDoneInTheLastXMovements = False Then
@@ -225,8 +221,7 @@ Private Function FindTheNextTernaryToBeSelected(CurrentComponentInAnalisys As By
 End Function
 Private Function GetMeIsThisComponentPresentInThisTernaryHotOnes(IsThisComponentPresentHotOnes() As Boolean, WillWeBeUsingThisTernaryHotOnes() As Boolean, TernaryComponents() As Boolean) As Variant
     Dim IsThisComponentPresentInThisTernaryHotOnes(1 To 11, 1 To 18) As Boolean
-    Dim i As Byte
-    Dim j As Byte
+    Dim i As Byte, j As Byte
     For i = 1 To 18
         For j = 1 To 11
             If IsThisComponentPresentHotOnes(j) And WillWeBeUsingThisTernaryHotOnes(i) And TernaryComponents(i, j) Then
@@ -237,8 +232,7 @@ Private Function GetMeIsThisComponentPresentInThisTernaryHotOnes(IsThisComponent
     GetMeIsThisComponentPresentInThisTernaryHotOnes = IsThisComponentPresentInThisTernaryHotOnes
 End Function
 Private Function DoIAlreadyHaveTheMinimumAmmountOfAceptableTernaryMixtures(IsThisComponentPresentHotOnes() As Boolean, TernaryComponents() As Boolean, WillWeBeUsingThisTernaryHotOnes() As Boolean) As Variant
-    Dim i As Byte
-    Dim j As Byte
+    Dim i As Byte, j As Byte
     Dim HowManyComponentsAreRepresentedInThisTernary(1 To 18) As Byte
     Dim HowManyTimesIsTheComponentRepresented(1 To 11) As Byte
     Dim MinimumAmmountOfAceptableTernaryMixtures(0 To 11) As Boolean
@@ -261,8 +255,7 @@ Private Function DoIAlreadyHaveTheMinimumAmmountOfAceptableTernaryMixtures(IsThi
     DoIAlreadyHaveTheMinimumAmmountOfAceptableTernaryMixtures = MinimumAmmountOfAceptableTernaryMixtures
 End Function
 Private Sub CalculateAffinitiesOfEachTernary(SimplifiedChromatografy As Variant, AffinitiesOfEachTernary() As Double)
-    Dim i As Byte
-    Dim j As Byte
+    Dim i As Byte, j As Byte
     For i = 1 To 11
         For j = 1 To 18
             AffinitiesOfEachTernary(j) = AffinitiesOfEachTernary(j) + SimplifiedChromatografy(i) * MinVmaxOverVSum(i, j)
@@ -270,8 +263,7 @@ Private Sub CalculateAffinitiesOfEachTernary(SimplifiedChromatografy As Variant,
     Next i
 End Sub
 Private Sub CalculateHowManyComponentsAreRepresentedInThisTernary(IsThisComponentPresentHotOnes() As Boolean, HowManyComponentsAreRepresentedInThisTernary() As Byte)
-    Dim i As Byte
-    Dim j As Byte
+    Dim i As Byte, j As Byte
     For i = 1 To 18
         For j = 1 To 11
             If IsThisComponentPresentHotOnes(j) And TernaryComponents(i, j) Then
@@ -776,8 +768,7 @@ Private Sub UploadTheCoefficients()
     a(20, 0, 6) = 0.000000003928073
 End Sub
 Private Function FunctionA3(t As Byte, VAji() As Single) As Single
-    Dim i As Byte
-    Dim j As Byte
+    Dim i As Byte, j As Byte
     For i = 0 To 7
         For j = 0 To 6
             FunctionA3 = FunctionA3 + a(t, i, j) * VAji(xyzOfTernary(t, 1), t) ^ i * VAji(xyzOfTernary(t, 2), t) ^ j
